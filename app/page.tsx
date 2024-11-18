@@ -27,8 +27,8 @@ const featuredTestimonials = ['Zack-1', 'Ricky-1', 'a'];
 
 export default async function Home() {
 	const utFiles: UTFile[] = await fetchUTFiles();
-	const mainVideo: UTFile | undefined = utFiles.find((utFile) => utFile.name === 'main.mp4');
-	// const testimonials: UTFile[] = utFiles.filter((utFile) => {
+	const mainVideo: UTFile | undefined = utFiles?.find((utFile) => utFile.name === 'main.mp4');
+	// const testimonials: UTFile[] = utFiles?.filter((utFile) => {
 	// 	const isMainVideo = utFile.name === 'main.mp4';
 	// 	const isFeaturedTestimonial = featuredTestimonials.some(
 	// 		(testimonial) =>
@@ -38,10 +38,10 @@ export default async function Home() {
 	// 	);
 	// 	return !isMainVideo && !isFeaturedTestimonial;
 	// });
-	const testimonials = utFiles.filter((utFile) => utFile.name !== 'main.mp4');
-	const videoTestimonials = testimonials.filter((utFile) => utFile.name.endsWith('.mp4'));
+	const testimonials = utFiles?.filter((utFile) => utFile.name !== 'main.mp4');
+	const videoTestimonials = testimonials?.filter((utFile) => utFile.name.endsWith('.mp4'));
 	const imageTestimonials = Object.values(
-		testimonials.reduce((acc: Record<string, Record<string, UTFile>>, utFile) => {
+		testimonials?.reduce((acc: Record<string, Record<string, UTFile>>, utFile) => {
 			const match = utFile.name.match(/^(.*)-(before|after)-\d+\.webp$/);
 			if (match) {
 				const [_, baseName, type] = match;
@@ -52,7 +52,7 @@ export default async function Home() {
 			}
 			return acc;
 		}, {}),
-	).filter((pair) => pair.before && pair.after) as { before: UTFile; after: UTFile }[];
+	)?.filter((pair) => pair.before && pair.after) as { before: UTFile; after: UTFile }[];
 
 	return (
 		<main className='flex w-screen flex-col items-center gap-8 overflow-x-hidden pb-8'>
@@ -129,10 +129,10 @@ export default async function Home() {
 				{featuredTestimonials.map((featuredTestimonial: string, index: number) => {
 					const nameLC = featuredTestimonial.toLowerCase();
 
-					const video = utFiles.find((testimonial) => testimonial.name === `${nameLC}.mp4`);
+					const video = utFiles?.find((testimonial) => testimonial.name === `${nameLC}.mp4`);
 
-					const before = utFiles.find((testimonial) => testimonial.name.startsWith(`${nameLC}-before`));
-					const after = utFiles.find((testimonial) => testimonial.name.startsWith(`${nameLC}-after`));
+					const before = utFiles?.find((testimonial) => testimonial.name.startsWith(`${nameLC}-before`));
+					const after = utFiles?.find((testimonial) => testimonial.name.startsWith(`${nameLC}-after`));
 
 					const beforeWeight = before?.name.split('-')[3].split('.')[0];
 					const afterWeight = after?.name.split('-')[3].split('.')[0];
