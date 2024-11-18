@@ -15,8 +15,11 @@ const geistMono = localFont({
 });
 
 export const metadata: Metadata = {
-	title: 'Name - Personal Trainer',
+	title: 'FitWithElliot',
 	description: "Get in shape like you've always wanted to!",
+	icons: {
+		icon: '/logo.png',
+	},
 };
 
 export default function RootLayout({

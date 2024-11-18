@@ -2,7 +2,13 @@ import type { NextConfig } from 'next';
 
 const nextConfig: NextConfig = {
 	images: {
-		domains: ['cdn.prod.website-files.com'],
+		remotePatterns: [
+			{
+				protocol: 'https',
+				hostname: 'utfs.io',
+				pathname: '/a/zhk9o8up8h/*',
+			},
+		],
 	},
 };
 
