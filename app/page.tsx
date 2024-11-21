@@ -14,16 +14,9 @@ const socials = {
 	Twitter: 'https://x.com/fitwithelliot',
 };
 
-const sites = {
-	'Site 1': '/next.svg',
-	'Site 2': '/next.svg',
-	'Site 3': '/next.svg',
-	'Site 4': '/next.svg',
-	'Site 5': '/next.svg',
-	'Site 6': '/next.svg',
-};
+const featuredTestimonials = ['Zack-1', 'Ricky-1', 'Kyle-1'];
 
-const featuredTestimonials = ['Zack-1', 'Ricky-1', 'a'];
+const steps = ['Step 1', 'Step 2', 'Step 3', 'Step 4', 'Step 5'];
 
 export default async function Home() {
 	const utFiles: UTFile[] = await fetchUTFiles();
@@ -82,19 +75,9 @@ export default async function Home() {
 					width={250}
 				/>
 
-				<h1 className='text-center text-6xl font-bold uppercase max-lg:hidden'>
-					get the gameplan to building
-					<br />
-					your online fitness business
-				</h1>
+				<h1 className='text-center text-6xl font-bold uppercase max-lg:hidden'>join the network!</h1>
 
-				<h1 className='text-center text-3xl font-bold uppercase lg:hidden'>
-					get the gameplan to
-					<br />
-					building your online
-					<br />
-					fitness business
-				</h1>
+				<h1 className='text-center text-3xl font-bold uppercase lg:hidden'>join the network!</h1>
 
 				<video
 					className='h-[40%] w-[90%] lg:h-[56%] lg:w-[58%]'
@@ -102,25 +85,41 @@ export default async function Home() {
 					src={`${process.env.CDN}/${mainVideo?.key}`}
 				/>
 
-				<ScrollButton>i want to be a trainer</ScrollButton>
+				<ScrollButton>i&apos;m ready!</ScrollButton>
 			</section>
 
 			<section
-				className='flex w-full flex-col items-center justify-center gap-10 lg:h-[130vh]'
+				className='flex w-full flex-col items-center justify-center lg:h-[110vh]'
 				id='Typeform'
 			>
 				<TypeFormAndBookCall />
+			</section>
 
-				<div className='flex h-2/5 w-full place-items-center items-center justify-between max-lg:grid max-lg:grid-cols-3 lg:h-1/5 lg:w-4/5'>
-					{Object.entries(sites).map(([key, value]: [string, string]) => (
-						<Image
-							key={key}
-							alt={key}
-							className='object-fit h-[20vh] w-1/3 lg:h-[15vh] lg:w-1/12'
-							height={50}
-							src={value}
-							width={50}
-						/>
+			<section className='flex w-full flex-col items-center gap-6 pb-20 pt-10 lg:h-[80vh]'>
+				<h2 className='text-center text-5xl font-extrabold uppercase text-black lg:text-6xl'>my personal journey...</h2>
+
+				<div className='flex w-full place-items-center items-center justify-between gap-3 max-lg:flex-col lg:h-[80%] lg:w-4/5 lg:gap-1'>
+					{steps.map((step: string, index: number) => (
+						<div
+							key={index}
+							className={`${index % 2 !== 0 ? 'max-lg:ml-16 lg:mt-52' : 'max-lg:mr-16'} relative flex lg:w-1/5`}
+						>
+							<Image
+								alt='Before'
+								className='size-full'
+								height={200}
+								src={`${process.env.CDN}/unqzD6vpZ1roeu7eJz9jzdMKPOswL5rERHhY90kcbAV7CqF2`}
+								width={200}
+							/>
+
+							<h3 className='absolute left-1/2 top-2 -translate-x-1/2 text-center text-xl font-extrabold uppercase'>
+								{step}
+							</h3>
+
+							<h3 className='absolute bottom-2 left-1/2 -translate-x-1/2 text-center text-xl font-extrabold uppercase'>
+								{200} lbs
+							</h3>
+						</div>
 					))}
 				</div>
 			</section>
@@ -206,7 +205,7 @@ export default async function Home() {
 			/>
 
 			<Testimonials
-				button='i want to be an online trainer'
+				button={`i'm ready!`}
 				imageTestimonials={[...imageTestimonials, ...imageTestimonials, ...imageTestimonials]}
 				videoTestimonials={[...videoTestimonials, ...videoTestimonials, ...videoTestimonials]}
 			/>
