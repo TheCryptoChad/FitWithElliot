@@ -31,6 +31,9 @@ export default async function Home() {
 	// 	);
 	// 	return !isMainVideo && !isFeaturedTestimonial;
 	// });
+	const elliotProgress = utFiles
+		?.filter((utFile) => utFile.name.startsWith('elliot'))
+		.sort((a, b) => a.name.localeCompare(b.name));
 	const testimonials = utFiles?.filter((utFile) => utFile.name !== 'main.mp4');
 	const videoTestimonials = testimonials?.filter((utFile) => utFile.name.endsWith('.mp4'));
 	const imageTestimonials = Object.values(
@@ -99,25 +102,25 @@ export default async function Home() {
 				<h2 className='text-center text-5xl font-extrabold uppercase text-black lg:text-6xl'>my personal journey...</h2>
 
 				<div className='flex w-full place-items-center items-center justify-between gap-3 max-lg:flex-col lg:h-[80%] lg:w-4/5 lg:gap-1'>
-					{steps.map((step: string, index: number) => (
+					{elliotProgress?.map((elliotProgress: UTFile, index: number) => (
 						<div
 							key={index}
-							className={`${index % 2 !== 0 ? 'max-lg:ml-16 lg:mt-52' : 'max-lg:mr-16'} relative flex lg:w-1/5`}
+							className={`${index % 2 !== 0 ? 'max-lg:ml-16 lg:mt-52' : 'max-lg:mr-16'} relative flex size-full lg:w-1/5`}
 						>
 							<Image
-								alt='Before'
-								className='size-full'
+								alt='Progress'
+								className='size-full object-cover'
 								height={200}
-								src={`${process.env.CDN}/unqzD6vpZ1roeu7eJz9jzdMKPOswL5rERHhY90kcbAV7CqF2`}
+								src={`${process.env.CDN}/${elliotProgress.key}`}
 								width={200}
 							/>
 
 							<h3 className='absolute left-1/2 top-2 -translate-x-1/2 text-center text-xl font-extrabold uppercase'>
-								{step}
+								Step {index + 1}
 							</h3>
 
 							<h3 className='absolute bottom-2 left-1/2 -translate-x-1/2 text-center text-xl font-extrabold uppercase'>
-								{200} lbs
+								{elliotProgress.name.split('.')[0].split('-')[2]} lbs
 							</h3>
 						</div>
 					))}
