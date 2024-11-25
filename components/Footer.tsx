@@ -10,6 +10,7 @@ export default function Footer() {
 				>
 					Terms And Conditions
 				</Link>
+
 				<Link
 					className='text-xl font-bold text-[#D90007]'
 					href='/'
@@ -17,13 +18,6 @@ export default function Footer() {
 					Privacy Policy
 				</Link>
 			</div>
-
-			<p className='text-center text-xs'>
-				This site is not a part of the Facebook website or Facebook Inc. Additionally, this site is not endorsed by
-				Facebook in any way. FACEBOOK is a trademark of FACEBOOK, Inc.
-			</p>
-
-			<p className='text-center text-xs'>Copyright &copy; onlinetrainersecrets.com. All Rights Reserved.</p>
 
 			<p className='text-center text-xs font-bold italic'>IMPORTANT: Earnings and Legal Disclaimers</p>
 
@@ -38,6 +32,8 @@ export default function Footer() {
 				exact, actual or as a promise of potential earnings - all numbers are illustrative only. Thanks for stopping by.
 				Until next time, remember: close high-ticket offers, change your life.
 			</p>
+
+			<p className='text-center text-xs'>Copyright &copy; onlinetrainersecrets.com. All Rights Reserved.</p>
 		</footer>
 	);
 }
