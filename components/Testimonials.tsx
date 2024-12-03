@@ -12,7 +12,7 @@ export default function Testimonials(props: Props) {
 	return (
 		<section className='flex w-full flex-col items-center gap-8 px-10'>
 			<div className='grid w-full place-items-center gap-y-20 pb-12 lg:grid-cols-4'>
-				{props.videoTestimonials.map((videoTestimonial: UTFile, index: number) => (
+				{props.videoTestimonials?.map((videoTestimonial: UTFile, index: number) => (
 					<Testimonial
 						key={index}
 						title={videoTestimonial.name}
@@ -22,7 +22,7 @@ export default function Testimonials(props: Props) {
 			</div>
 
 			<div className='grid w-full gap-8 lg:grid-cols-3 lg:px-8'>
-				{props.imageTestimonials.map((imageTestimonial: { before: UTFile; after: UTFile }, index: number) => {
+				{props.imageTestimonials?.map((imageTestimonial: { before: UTFile; after: UTFile }, index: number) => {
 					const beforeWeight = imageTestimonial.before.name.split('-')[3].split('.')[0];
 					const afterWeight = imageTestimonial.after.name.split('-')[3].split('.')[0];
 					return (

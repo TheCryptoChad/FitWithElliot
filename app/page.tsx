@@ -16,25 +16,22 @@ const socials = {
 
 const featuredTestimonials = ['Zack-1', 'Ricky-1', 'Kyle-1'];
 
-const steps = ['Step 1', 'Step 2', 'Step 3', 'Step 4', 'Step 5'];
-
 export default async function Home() {
 	const utFiles: UTFile[] = await fetchUTFiles();
 	const mainVideo: UTFile | undefined = utFiles?.find((utFile) => utFile.name === 'main.mp4');
 	const elliotProgress = utFiles
 		?.filter((utFile) => utFile.name.startsWith('elliot'))
 		.sort((a, b) => a.name.localeCompare(b.name));
-	// const testimonials: UTFile[] = utFiles?.filter((utFile) => {
-	// 	const isMainVideo = utFile.name === 'main.mp4';
-	// 	const isFeaturedTestimonial = featuredTestimonials.some(
-	// 		(testimonial) =>
-	// 			utFile.name === `${testimonial.toLowerCase()}.mp4` ||
-	// 			new RegExp(`^${testimonial.toLowerCase()}-before-\\d+\\.webp$`).test(utFile.name) ||
-	// 			new RegExp(`^${testimonial.toLowerCase()}-after-\\d+\\.webp$`).test(utFile.name),
-	// 	);
-	// 	return !isMainVideo && !isFeaturedTestimonial;
-	// });
-	const testimonials = utFiles?.filter((utFile) => utFile.name !== 'main.mp4');
+	const testimonials: UTFile[] = utFiles?.filter((utFile) => {
+		const isMainVideo = utFile.name === 'main.mp4';
+		const isFeaturedTestimonial = featuredTestimonials.some(
+			(testimonial) =>
+				utFile.name === `${testimonial.toLowerCase()}.mp4` ||
+				new RegExp(`^${testimonial.toLowerCase()}-before-\\d+\\.webp$`).test(utFile.name) ||
+				new RegExp(`^${testimonial.toLowerCase()}-after-\\d+\\.webp$`).test(utFile.name),
+		);
+		return !isMainVideo && !isFeaturedTestimonial;
+	});
 	const videoTestimonials = testimonials?.filter((utFile) => utFile.name.endsWith('.mp4'));
 	const imageTestimonials = Object.values(
 		testimonials?.reduce((acc: Record<string, Record<string, UTFile>>, utFile) => {
@@ -136,7 +133,7 @@ export default async function Home() {
 			</section>
 
 			<section className='flex w-full flex-col items-center gap-10 bg-[#000000E6] py-10'>
-				<h2 className='w-full text-center text-5xl font-extrabold uppercase'>my success stories</h2>
+				<h2 className='w-full text-center text-5xl font-extrabold uppercase'>my clients&apos; success stories</h2>
 				<div className='items-between flex w-full items-center justify-center max-lg:flex-col max-lg:gap-16'>
 					{featuredTestimonials.map((featuredTestimonial: string, index: number) => {
 						const nameLC = featuredTestimonial.toLowerCase();
@@ -219,7 +216,7 @@ export default async function Home() {
 				videoTestimonials={videoTestimonials}
 			/>
 
-			<Testimonials
+			{/* <Testimonials
 				button={`okay i'm in!`}
 				imageTestimonials={imageTestimonials}
 				videoTestimonials={videoTestimonials}
@@ -234,7 +231,7 @@ export default async function Home() {
 			<Testimonials
 				imageTestimonials={imageTestimonials}
 				videoTestimonials={videoTestimonials}
-			/>
+			/> */}
 
 			<Separator className='w-[92%] bg-[#D90007] lg:w-4/5' />
 
