@@ -1,5 +1,7 @@
 'use server';
 
+import { UTApi } from 'uploadthing/server';
+
 export const fetchUTFiles = async (): Promise<UTFile[]> => {
 	try {
 		const response = await fetch('https://api.uploadthing.com/v6/listFiles', {
@@ -18,20 +20,31 @@ export const fetchUTFiles = async (): Promise<UTFile[]> => {
 	}
 };
 
-export const convertImages = async (files: UTFile[]): Promise<void> => {
+export const convertImages = async (
+	beforeUrl: string,
+	afterUrl: string,
+	beforeName: string,
+	afterName: string,
+	oldKeys: string[],
+) => {
 	try {
-		await fetch('https://api.cloudconvert.com/v2/jobs', {
+		const response = await fetch('https://sync.api.cloudconvert.com/v2/jobs', {
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json',
+				Authorization: `Bearer ${process.env.CLOUDCONVERT_API_KEY}`,
 			},
 			body: JSON.stringify({
 				tasks: {
 					'import-1': {
-						operation: 'import/upload',
+						operation: 'import/url',
+						url: beforeUrl,
+						filename: beforeName,
 					},
 					'import-2': {
-						operation: 'import/upload',
+						operation: 'import/url',
+						url: afterUrl,
+						filename: afterName,
 					},
 					optimize: {
 						operation: 'optimize',
@@ -39,19 +52,71 @@ export const convertImages = async (files: UTFile[]): Promise<void> => {
 					},
 					convert: {
 						operation: 'convert',
-						output_format: 'webp',
 						input: ['optimize'],
+						output_format: 'webp',
 					},
 					export: {
 						operation: 'export/url',
 						input: ['convert'],
-						inline: false,
+						inline: true,
 						archive_multiple_files: false,
 					},
 				},
-				tag: 'jobbuilder',
+				tag: 'images',
 			}),
 		});
+
+		const data = await response.json();
+
+		const before = data.data.tasks[0].result.files[0].url;
+		const after = data.data.tasks[1].result.files[0].url;
+
+		const utApi = new UTApi();
+		await utApi.uploadFilesFromUrl([before, after]);
+		await utApi.deleteFiles(oldKeys);
+	} catch (error) {
+		console.log(error);
+	}
+};
+
+export const convertVideo = async (url: string, name: string, oldKey: string[]) => {
+	try {
+		const response = await fetch('https://sync.api.cloudconvert.com/v2/jobs', {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json',
+				Authorization: `Bearer ${process.env.CLOUDCONVERT_API_KEY}`,
+			},
+			body: JSON.stringify({
+				tasks: {
+					import: {
+						operation: 'import/url',
+						url: url,
+						filename: name,
+					},
+					convert: {
+						operation: 'convert',
+						input: ['import'],
+						output_format: 'mp4',
+					},
+					export: {
+						operation: 'export/url',
+						input: ['convert'],
+						inline: true,
+						archive_multiple_files: false,
+					},
+				},
+				tag: 'video',
+			}),
+		});
+
+		const data = await response.json();
+
+		const video = data.data.tasks[0].result.files[0].url;
+
+		const utApi = new UTApi();
+		await utApi.uploadFilesFromUrl([video]);
+		await utApi.deleteFiles(oldKey);
 	} catch (error) {
 		console.log(error);
 	}

@@ -6,12 +6,15 @@ import type { OurFileRouter } from '../app/api/uploadthing/core';
 import { Input } from './ui/input';
 import { Label } from './ui/label';
 import { Fragment, useRef } from 'react';
+import { convertImages, convertVideo } from '@/lib/actions';
+import { error } from 'console';
 
 export const UploadButton = generateUploadButton<OurFileRouter>();
 export const UploadDropzone = generateUploadDropzone<OurFileRouter>();
 
 type Props = {
 	type: 'imageUploader' | 'videoUploader';
+	utFiles: UTFile[];
 };
 
 export default function FileUpload(props: Props) {
@@ -62,10 +65,63 @@ export default function FileUpload(props: Props) {
 				</Fragment>
 			)}
 
-			<UploadButton
-				className='col-span-3'
-				endpoint={props.type}
-			/>
+			{props.type === 'imageUploader' ? (
+				<UploadButton
+					className='col-span-3'
+					endpoint={props.type}
+					headers={async () => {
+						if (passwordRef.current) return new Headers({ 'admin-password': passwordRef.current!.value });
+						return {};
+					}}
+					onClientUploadComplete={async (res) => {
+						if (nameRef.current && weightBeforeRef.current && weightAfterRef.current) {
+							const baseName: string = nameRef.current!.value.toLowerCase();
+							const uniqueNames: Set<string> = new Set<string>();
+
+							props.utFiles.forEach((file) => {
+								const match = file.name.match(new RegExp(`^(${baseName}-\\d+)-(before|after)-\\d+\\.webp$`));
+								if (match) uniqueNames.add(match[1]);
+							});
+
+							const repeatedNameCount: number = uniqueNames.size + 1;
+
+							await convertImages(
+								res[1].url,
+								res[0].url,
+								`${baseName}-${repeatedNameCount}-before-${weightBeforeRef.current!.value}.jpg`,
+								`${baseName}-${repeatedNameCount}-after-${weightAfterRef.current!.value}.jpg`,
+								res.map((file) => file.key),
+							);
+						}
+					}}
+				/>
+			) : (
+				<UploadButton
+					className='col-span-3'
+					endpoint={props.type}
+					headers={async () => {
+						if (passwordRef.current) return new Headers({ 'admin-password': passwordRef.current!.value });
+						return {};
+					}}
+					onClientUploadComplete={async (res) => {
+						if (nameRef.current) {
+							const baseName: string = nameRef.current!.value.toLowerCase();
+							let repeatedNameCount: number = 1;
+
+							props.utFiles.forEach((file) => {
+								const match = file.name.startsWith(baseName) && file.name.endsWith('.mp4');
+								if (match) repeatedNameCount++;
+							});
+
+							await convertVideo(
+								res[0].url,
+								`${baseName}-${repeatedNameCount}.mov`,
+								res.map((file) => file.key),
+							);
+						}
+					}}
+				/>
+			)}
 		</div>
 	);
 }
