@@ -4,8 +4,9 @@ import { UTApi } from 'uploadthing/server';
 
 export const fetchUTFiles = async (): Promise<UTFile[]> => {
 	try {
-		const response = await fetch('https://api.uploadthing.com/v6/listFiles', {
+		const response = await fetch('https://api.uploadthing.com/v6/listFiles?cache-bust=' + new Date().getTime(), {
 			method: 'POST',
+			cache: 'no-store',
 			headers: {
 				'Content-Type': 'application/json',
 				...(process.env.UPLOADTHING_API_KEY && { 'x-uploadthing-api-key': process.env.UPLOADTHING_API_KEY }),
