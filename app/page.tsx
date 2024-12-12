@@ -47,6 +47,9 @@ export default async function Home() {
 		}, {}),
 	)?.filter((pair) => pair.before && pair.after) as { before: UTFile; after: UTFile }[];
 
+	const videosQuarter = Math.floor(videoTestimonials?.length / 4);
+	const imagesQuarter = Math.floor(imageTestimonials?.length / 4);
+
 	return (
 		<main className='flex w-screen flex-col items-center gap-8 overflow-x-hidden pb-8'>
 			<section className='flex w-full flex-col items-center gap-10 bg-[#000000E6] py-5 lg:min-h-[150vh]'>
@@ -212,26 +215,26 @@ export default async function Home() {
 
 			<Testimonials
 				button={`let's go!`}
-				imageTestimonials={imageTestimonials}
-				videoTestimonials={videoTestimonials}
+				imageTestimonials={imageTestimonials.slice(0, imagesQuarter)}
+				videoTestimonials={videoTestimonials.slice(0, videosQuarter)}
 			/>
 
-			{/* <Testimonials
+			<Testimonials
 				button={`okay i'm in!`}
-				imageTestimonials={imageTestimonials}
-				videoTestimonials={videoTestimonials}
+				imageTestimonials={imageTestimonials.slice(imagesQuarter, imagesQuarter * 2)}
+				videoTestimonials={videoTestimonials.slice(videosQuarter, videosQuarter * 2)}
 			/>
 
 			<Testimonials
 				button={`i'm ready!`}
-				imageTestimonials={imageTestimonials}
-				videoTestimonials={videoTestimonials}
+				imageTestimonials={imageTestimonials.slice(imagesQuarter * 2, imagesQuarter * 3)}
+				videoTestimonials={videoTestimonials.slice(videosQuarter * 2, videosQuarter * 3)}
 			/>
 
 			<Testimonials
-				imageTestimonials={imageTestimonials}
-				videoTestimonials={videoTestimonials}
-			/> */}
+				imageTestimonials={imageTestimonials.slice(imagesQuarter * 3)}
+				videoTestimonials={videoTestimonials.slice(videosQuarter * 3)}
+			/>
 
 			<Separator className='w-[92%] bg-[#D90007] lg:w-4/5' />
 
