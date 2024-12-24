@@ -22,15 +22,18 @@ export default function Footer() {
 			<p className='text-center text-xs font-bold italic'>IMPORTANT: Earnings and Legal Disclaimers</p>
 
 			<p className='text-center text-xs'>
-				We don't believe in get-rich-quick programs. We believe in hard work, adding value and serving others. And
-				that's what our programs are designed to help you do. As stated by law, we can not and do not make any
-				guarantees about your own ability to get results or earn any money with our ideas, information, programs or
-				strategies. We don't know you and, besides, your results in life are up to you. Agreed? We're here to help by
-				giving you our greatest strategies to move you forward, faster. However, nothing on this page or any of our
-				websites or emails is a promise or guarantee of future earnings. Any financial numbers referenced here, or on
-				any of our sites or emails, are simply estimates or projections or past results, and should not be considered
-				exact, actual or as a promise of potential earnings - all numbers are illustrative only. Thanks for stopping by.
-				Until next time, remember: close high-ticket offers, change your life.
+				The information provided on this website is for general informational purposes only and should not be construed
+				as medical advice. While every effort has been made to ensure the accuracy of the information presented, the
+				owner of this website makes no representations or warranties regarding the completeness, reliability, and
+				suitability of the information.
+			
+				You should always consult with a physician or other qualified health provider before starting any new exercise
+				program. The exercises, suggestions, and tips provided by this website may not be suitable for everyone. Any
+				reliance you place on such information is strictly at your own risk.
+			
+				In no event will the owner or employees of this website be liable for any loss or damage arising from the use of
+				this website or any linked websites. This includes, without limitation, indirect or consequential loss or
+				damage, or any loss or damage whatsoever arising from loss of data or profits.
 			</p>
 
 			<p className='text-center text-xs'>Copyright &copy; onlinetrainersecrets.com. All Rights Reserved.</p>
