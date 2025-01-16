@@ -29,7 +29,7 @@ export const convertImages = async (
 	oldKeys: string[],
 ) => {
 	try {
-		const response = await fetch('https://sync.api.cloudconvert.com/v2/jobs', {
+		const response = await fetch('https://api.cloudconvert.com/v2/jobs', {
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json',
@@ -69,8 +69,22 @@ export const convertImages = async (
 
 		const data = await response.json();
 
-		const before = data.data.tasks[0].result.files[0].url;
-		const after = data.data.tasks[1].result.files[0].url;
+		let response2 = null;
+
+		do {
+			response2 = await fetch(data.data.links.self, {
+				method: 'GET',
+				headers: {
+					'Content-Type': 'application/json',
+					Authorization: `Bearer ${process.env.CLOUDCONVERT_API_KEY}`,
+				},
+			});
+		} while (response2.status !== 200);
+
+		const data2 = await response2.json();
+
+		const before = data2.data.tasks[0].result.files[0].url;
+		const after = data2.data.tasks[1].result.files[0].url;
 
 		const utApi = new UTApi();
 		await utApi.uploadFilesFromUrl([before, after]);
@@ -82,7 +96,7 @@ export const convertImages = async (
 
 export const convertVideo = async (url: string, name: string, oldKey: string[]) => {
 	try {
-		const response = await fetch('https://sync.api.cloudconvert.com/v2/jobs', {
+		const response = await fetch('https://api.cloudconvert.com/v2/jobs', {
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json',
@@ -113,7 +127,21 @@ export const convertVideo = async (url: string, name: string, oldKey: string[]) 
 
 		const data = await response.json();
 
-		const video = data.data.tasks[0].result.files[0].url;
+		let response2 = null;
+
+		do {
+			response2 = await fetch(data.data.links.self, {
+				method: 'GET',
+				headers: {
+					'Content-Type': 'application/json',
+					Authorization: `Bearer ${process.env.CLOUDCONVERT_API_KEY}`,
+				},
+			});
+		} while (response2.status !== 200);
+
+		const data2 = await response2.json();
+
+		const video = data2.data.tasks[0].result.files[0].url;
 
 		const utApi = new UTApi();
 		await utApi.uploadFilesFromUrl([video]);
