@@ -70,6 +70,7 @@ export const convertImages = async (
 		const data = await response.json();
 
 		let response2 = null;
+		let data2 = null;
 
 		do {
 			response2 = await fetch(data.data.links.self, {
@@ -79,12 +80,14 @@ export const convertImages = async (
 					Authorization: `Bearer ${process.env.CLOUDCONVERT_API_KEY}`,
 				},
 			});
-		} while (response2.status !== 200);
 
-		const data2 = await response2.json();
+			data2 = await response2.json();
+		} while (response2.status !== 200 || data2.data.status !== 'finished');
 
-		const before = data2.data.tasks[0].result.files[0].url;
-		const after = data2.data.tasks[1].result.files[0].url;
+		const exportTask = data2.data.tasks.find((task: any) => task.name === 'export');
+
+		const before = exportTask.result.files.find((file: any) => file.filename.includes('before')).url;
+		const after = exportTask.result.files.find((file: any) => file.filename.includes('after')).url;
 
 		const utApi = new UTApi();
 		await utApi.uploadFilesFromUrl([before, after]);
@@ -128,6 +131,7 @@ export const convertVideo = async (url: string, name: string, oldKey: string[]) 
 		const data = await response.json();
 
 		let response2 = null;
+		let data2 = null;
 
 		do {
 			response2 = await fetch(data.data.links.self, {
@@ -137,11 +141,13 @@ export const convertVideo = async (url: string, name: string, oldKey: string[]) 
 					Authorization: `Bearer ${process.env.CLOUDCONVERT_API_KEY}`,
 				},
 			});
-		} while (response2.status !== 200);
 
-		const data2 = await response2.json();
+			data2 = await response2.json();
+		} while (response2.status !== 200 || data2.data.status !== 'finished');
 
-		const video = data2.data.tasks[0].result.files[0].url;
+		const exportTask = data2.data.tasks.find((task: any) => task.name === 'export');
+
+		const video = exportTask.result.files[0].url;
 
 		const utApi = new UTApi();
 		await utApi.uploadFilesFromUrl([video]);
